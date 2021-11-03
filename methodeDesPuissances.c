@@ -72,7 +72,7 @@ float chercheMaxVecteur(float* vecteur,int taille)
 }
 
 
-int** calculeProduitScalaireMatriceCarree(int facteurScalaire,int** matrice,int taille)
+void calculeProduitScalaireMatriceCarree(int facteurScalaire,int** matrice,int taille)
 {
 	int i,j;
 
@@ -81,41 +81,34 @@ int** calculeProduitScalaireMatriceCarree(int facteurScalaire,int** matrice,int 
 		for(j=0;j<taille;j++)
 				matrice[i][j] *= facteurScalaire;
 	}
-
-	return matrice;
 }
 
 
-float* produitMatriceCarreeParVecteur(int** matrice,float* vecteur,int taille)
+void produitMatriceCarreeParVecteur(int** matrice,float* vecteur,int taille)
 {
 	int i,j;
 	int produitColonne;
-	float* produitMatriceVecteur = NULL;
-	produitMatriceVecteur = malloc(taille * sizeof(float));
 
 	for(i=0;i<taille;i++)
 	{
 		produitColonne = 0;
 		for(j=0;j<taille;j++)
 			produitColonne += matrice[i][j] * vecteur[j];
-		produitMatriceVecteur[i] = produitColonne;
+		vecteur[i] = produitColonne;
 	}
 
-	return produitMatriceVecteur;
 }
 
 
-float* diviseVecteurParFloat(float* vecteur,int taille,float diviseur)
+void diviseVecteurParFloat(float* vecteur,int taille,float diviseur)
 {
 	int i;
-	float* nouveauVecteur = NULL;
-	nouveauVecteur = malloc(taille * sizeof(float));
 
-	//QUE FAIRE SI DIVISEUR = 0 (cad si maxVecteur = 0)
-	for(i=0;i<taille;i++)
-		nouveauVecteur[i] = vecteur[i]/diviseur;
-
-	return nouveauVecteur;
+	if(diviseur != 0)
+	{
+		for(i=0;i<taille;i++)
+			vecteur[i] = vecteur[i]/diviseur;
+	}
 }
 
 
@@ -126,34 +119,51 @@ int main()
 	float * vecteur = NULL;
 	int ** matrice = NULL;
 	int taille = rand()%4 + 2;
+	int iteration = 0;
 	float maxVecteur;
-	float ancienMaxVecteur = 1;
+	float ancienMaxVecteur;
 	float taux;
 	int resultat;
-	//int facteurScalaire = 3;
 
 
 	vecteur = creeVecteurAleatoire(taille);
+	litVecteur(vecteur,taille);
+
+	maxVecteur = chercheMaxVecteur(vecteur,taille);
+	printf("Max: %.3f\n", maxVecteur);
+
+	diviseVecteurParFloat(vecteur,taille,maxVecteur);
 	litVecteur(vecteur,taille);
 
 	matrice = creeMatriceCarreeAleatoire(taille);
 	litMatriceCarree(matrice,taille);
 
 
-	/*do{
-		vecteur = produitMatriceCarreeParVecteur(matrice,vecteur,taille);
+	do{
+
+		iteration++;
+		printf("Iteration: %d\n", iteration);
+
+		produitMatriceCarreeParVecteur(matrice,vecteur,taille);
 		litVecteur(vecteur,taille);
 
 		maxVecteur = chercheMaxVecteur(vecteur,taille);
 		printf("Max: %.3f\n", maxVecteur);
+		maxVecteur = 0;
+		if(maxVecteur == 0)
+			break;
 
-		vecteur = diviseVecteurParFloat(vecteur,taille,maxVecteur);
+		diviseVecteurParFloat(vecteur,taille,maxVecteur);
 		litVecteur(vecteur,taille);
-
-		taux = maxVecteur / ancienMaxVecteur;
+		
+		if(iteration == 1)
+			ancienMaxVecteur = maxVecteur * 2;
+		taux = 1 - maxVecteur / ancienMaxVecteur;
 		printf("-- taux: %.3f --\n",taux);
 		ancienMaxVecteur = maxVecteur; 
-	}while(taux > 0.05);*/
+
+	}while(taux > 0.1);
+
 
 	resultat = ceilf(maxVecteur);
 	printf("Le résultat est %d.\n",resultat);
