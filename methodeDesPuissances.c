@@ -60,15 +60,31 @@ void litMatriceCarree(int** matrice,int taille)
 float chercheMaxVecteur(float* vecteur,int taille)
 {
 	int i;
-	float max = -9999;
+	float max = fabs(vecteur[0]);
 
-	for(i=0;i<taille;i++)
+	for(i = 1;i < taille;i++)
 	{
-		if(vecteur[i] > max)
-			max = vecteur[i];
+		if(fabs(vecteur[i]) > max)
+			max = fabs(vecteur[i]);
 	}
 
 	return max;
+}
+
+int estMatriceNulle(int** matrice, int taille)
+{
+	int i,j;
+	for (i = 0; i < taille; i++)
+	{
+		for (j = 0; j < taille; j++)
+		{
+			if(matrice[i][j] != 0)
+			{
+				return 0;
+			}
+		}
+	}
+	return 1;
 }
 
 
@@ -84,19 +100,23 @@ void calculeProduitScalaireMatriceCarree(int facteurScalaire,int** matrice,int t
 }
 
 
-void produitMatriceCarreeParVecteur(int** matrice,float* vecteur,int taille)
+float* produitMatriceCarreeParVecteur(int** matrice,float* vecteur,int taille)
 {
 	int i,j;
-	int produitColonne;
-
+	float produitColonne;
+	float* resultat = malloc(taille * sizeof(int));
 	for(i=0;i<taille;i++)
 	{
 		produitColonne = 0;
 		for(j=0;j<taille;j++)
+		{
 			produitColonne += matrice[i][j] * vecteur[j];
-		vecteur[i] = produitColonne;
+			//printf("Produit : matrice : %d vecteur : %f resultat : %f  \n",matrice[i][j],vecteur[j],matrice[i][j] * vecteur[j]);
+		}
+		resultat[i] = produitColonne;
+		//printf("Résultat : %f %f \n",resultat[i],produitColonne);
 	}
-
+	return resultat;
 }
 
 
@@ -110,64 +130,101 @@ void diviseVecteurParFloat(float* vecteur,int taille,float diviseur)
 			vecteur[i] = vecteur[i]/diviseur;
 	}
 }
-
-
-int main()
+int methodeDesPuissances(int ** matrice,float* vecteur,int taille)
 {
-	srand(time(NULL));
-
-	float * vecteur = NULL;
-	int ** matrice = NULL;
-	int taille = rand()%4 + 2;
 	int iteration = 0;
 	float maxVecteur;
 	float ancienMaxVecteur;
 	float taux;
 	int resultat;
-
-
-	vecteur = creeVecteurAleatoire(taille);
 	litVecteur(vecteur,taille);
-
-	maxVecteur = chercheMaxVecteur(vecteur,taille);
-	printf("Max: %.3f\n", maxVecteur);
-
-	diviseVecteurParFloat(vecteur,taille,maxVecteur);
-	litVecteur(vecteur,taille);
-
-	matrice = creeMatriceCarreeAleatoire(taille);
 	litMatriceCarree(matrice,taille);
 
+	ancienMaxVecteur = chercheMaxVecteur(vecteur,taille);
+	if (estMatriceNulle(matrice,taille))
+	{
+		printf("ERREUR : LA MATRICE EST NULLE");
+		return -1;	
+	}
+	
+	printf("Max: %.3f\n", ancienMaxVecteur);
+	diviseVecteurParFloat(vecteur,taille,ancienMaxVecteur);
+	litVecteur(vecteur,taille);
 
 	do{
 
 		iteration++;
 		printf("Iteration: %d\n", iteration);
 
-		produitMatriceCarreeParVecteur(matrice,vecteur,taille);
+		vecteur = produitMatriceCarreeParVecteur(matrice,vecteur,taille);
 		litVecteur(vecteur,taille);
 
 		maxVecteur = chercheMaxVecteur(vecteur,taille);
 		printf("Max: %.3f\n", maxVecteur);
-		maxVecteur = 0;
-		if(maxVecteur == 0)
-			break;
 
 		diviseVecteurParFloat(vecteur,taille,maxVecteur);
 		litVecteur(vecteur,taille);
 		
-		if(iteration == 1)
-			ancienMaxVecteur = maxVecteur * 2;
-		taux = 1 - maxVecteur / ancienMaxVecteur;
+		taux = (maxVecteur - ancienMaxVecteur)/ancienMaxVecteur;
 		printf("-- taux: %.3f --\n",taux);
 		ancienMaxVecteur = maxVecteur; 
 
-	}while(taux > 0.1);
+	}while(taux > 0.05f || taux < -0.05f);
 
 
-	resultat = ceilf(maxVecteur);
-	printf("Le résultat est %d.\n",resultat);
+	resultat = roundf(maxVecteur);
+	printf("\n------------------------------\n");
+	printf("La valeur propre est %d.\n",resultat);
+	printf("Le vecteur associé est ");
+	litVecteur(vecteur,taille);
+	return 0;
+}
 
+
+
+int main()
+{
+	srand(time(NULL));
+	// EXEMPLE 1 RESULTAT ATTENDU : 16
+	/*
+	float * vecteur = NULL;
+	int ** matrice = NULL;
+	int taille = 2;
+
+	vecteur = creeVecteurAleatoire(taille);
+	vecteur[0] = -1;
+	vecteur[1] = 0.5f;
+
+	matrice = creeMatriceCarreeAleatoire(taille);
+	matrice[0][0] = 7;
+	matrice[0][1] = 9;
+	matrice[1][1] = 7;
+	matrice[1][0] = 9;
+	*/
+	//EXEMPLE 2 //RESULTAT ATTENDU : -1, 2 ou 8
+	float * vecteur = NULL;
+	int ** matrice = NULL;
+	int taille = 3;
+
+	vecteur = creeVecteurAleatoire(taille);
+
+	matrice = creeMatriceCarreeAleatoire(taille);
+	matrice[0][0] = 2;
+	matrice[0][1] = 0;
+	matrice[0][2] = 0;
+
+	matrice[1][0] = 0;
+	matrice[1][1] = 4;
+	matrice[1][2] = 5;
+
+	matrice[2][0] = 0;
+	matrice[2][1] = 4;
+	matrice[2][2] = 3;
+
+	
+	methodeDesPuissances(matrice,vecteur,taille);
+	free(vecteur);
+	free(matrice);
 	return 0;
 }
 
