@@ -4,13 +4,13 @@
 #include <math.h>
 
 
-float* creeVecteurAleatoire(int taille);
-int** creeMatriceCarreeAleatoire(int taille);
-void litVecteur(float* vecteur,int taille);
-void litMatriceCarree(int** matrice,int taille);
-float chercheMaxVecteur(float* vecteur,int taille);
-int estMatriceNulle(int** matrice, int taille);
-void calculeProduitScalaireMatriceCarree(int facteurScalaire,int** matrice,int taille);
-float* produitMatriceCarreeParVecteur(int** matrice,float* vecteur,int taille);
-void diviseVecteurParFloat(float* vecteur,int taille,float diviseur);
-int methodeDesPuissances(int ** matrice,float* vecteur,int taille);
+double* creeVecteurAleatoire(int taille);
+double** creeMatriceCarreeAleatoire(int taille);
+void litVecteur(double* vecteur,int taille);
+void litMatriceCarree(double** matrice,int taille);
+double chercheMaxVecteur(double* vecteur,int taille);
+int estMatriceNulle(double** matrice, int taille);
+void calculeProduitScalaireMatriceCarree(int facteurScalaire,double** matrice,int taille);
+double* produitMatriceCarreeParVecteur(double** matrice,double* vecteur,int taille);
+void diviseVecteurPardouble(double* vecteur,int taille,double diviseur);
+int methodeDesPuissances(double** matrice,double* vecteur,int taille);

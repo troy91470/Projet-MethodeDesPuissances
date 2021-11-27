@@ -1,2 +1,2 @@
-main.o: methodeDesPuissances.h methodeDesPuissances.c
-	gcc methodeDesPuissances.h methodeDesPuissances.c -o methodeDesPuissances -Wall -lm
+main.o: methodeDesPuissances.h methodeDesPuissances.c lectureMatrice.c mmio.c
+	gcc methodeDesPuissances.h methodeDesPuissances.c lectureMatrice.c mmio.c -o methodeDesPuissances -Wall -lm -g

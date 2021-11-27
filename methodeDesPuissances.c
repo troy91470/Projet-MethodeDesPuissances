@@ -1,12 +1,12 @@
 #include "methodeDesPuissances.h"
+#include "lectureMatrice.h"
 
-
-float* creeVecteurAleatoire(int taille)
+double* creeVecteurAleatoire(int taille)
 {
 	int i;
 
-	float * vecteur = NULL;
-	vecteur = malloc(taille * sizeof(float));
+	double * vecteur = NULL;
+	vecteur = malloc(taille * sizeof(double));
 
 	for(i=0;i<taille;i++)
 		vecteur[i] = rand()%10;
@@ -15,16 +15,16 @@ float* creeVecteurAleatoire(int taille)
 }
 
 
-int** creeMatriceCarreeAleatoire(int taille)
+double** creeMatriceCarreeAleatoire(int taille)
 {
 	int i, j;
 
-	int ** matrice = NULL;
-	matrice = malloc(taille * sizeof(int*));
+	double** matrice = NULL;
+	matrice = malloc(taille * sizeof(double*));
 
 	for(i=0;i<taille;i++)
 	{
-		matrice[i] = malloc(taille * sizeof(int));
+		matrice[i] = malloc(taille * sizeof(double));
 		for(j=0;j<taille;j++)
 			matrice[i][j] = rand()%10;
 	}
@@ -33,7 +33,7 @@ int** creeMatriceCarreeAleatoire(int taille)
 }
 
 
-void litVecteur(float* vecteur,int taille)
+void litVecteur(double* vecteur,int taille)
 {
 	int i;
 
@@ -43,7 +43,7 @@ void litVecteur(float* vecteur,int taille)
 }
 
 
-void litMatriceCarree(int** matrice,int taille)
+void litMatriceCarree(double** matrice,int taille)
 {
 	int i,j;
 
@@ -51,16 +51,16 @@ void litMatriceCarree(int** matrice,int taille)
 	for(i=0;i<taille;i++)
 	{
 		for(j=0;j<taille;j++)
-			printf("|%d|",matrice[i][j]);
+			printf("|%f|",matrice[i][j]);
 		printf("\n");
 	}
 }
 
 
-float chercheMaxVecteur(float* vecteur,int taille)
+double chercheMaxVecteur(double* vecteur,int taille)
 {
 	int i;
-	float max = fabs(vecteur[0]);
+	double max = fabs(vecteur[0]);
 
 	for(i = 1;i < taille;i++)
 	{
@@ -71,7 +71,7 @@ float chercheMaxVecteur(float* vecteur,int taille)
 	return max;
 }
 
-int estMatriceNulle(int** matrice, int taille)
+int estMatriceNulle(double** matrice, int taille)
 {
 	int i,j;
 	for (i = 0; i < taille; i++)
@@ -88,7 +88,7 @@ int estMatriceNulle(int** matrice, int taille)
 }
 
 
-void calculeProduitScalaireMatriceCarree(int facteurScalaire,int** matrice,int taille)
+void calculeProduitScalaireMatriceCarree(int facteurScalaire,double** matrice,int taille)
 {
 	int i,j;
 
@@ -100,16 +100,17 @@ void calculeProduitScalaireMatriceCarree(int facteurScalaire,int** matrice,int t
 }
 
 
-float* produitMatriceCarreeParVecteur(int** matrice,float* vecteur,int taille)
+double* produitMatriceCarreeParVecteur(double** matrice,double* vecteur,int taille)
 {
 	int i,j;
-	float produitColonne;
-	float* resultat = malloc(taille * sizeof(int));
+	double produitColonne;
+	double* resultat = malloc(taille * sizeof(double));
 	for(i=0;i<taille;i++)
 	{
 		produitColonne = 0;
 		for(j=0;j<taille;j++)
 		{
+			//printf("%d %d \n",i,j);
 			produitColonne += matrice[i][j] * vecteur[j];
 			//printf("Produit : matrice : %d vecteur : %f resultat : %f  \n",matrice[i][j],vecteur[j],matrice[i][j] * vecteur[j]);
 		}
@@ -120,7 +121,7 @@ float* produitMatriceCarreeParVecteur(int** matrice,float* vecteur,int taille)
 }
 
 
-void diviseVecteurParFloat(float* vecteur,int taille,float diviseur)
+void diviseVecteurPardouble(double* vecteur,int taille,double diviseur)
 {
 	int i;
 
@@ -130,12 +131,12 @@ void diviseVecteurParFloat(float* vecteur,int taille,float diviseur)
 			vecteur[i] = vecteur[i]/diviseur;
 	}
 }
-int methodeDesPuissances(int ** matrice,float* vecteur,int taille)
+int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 {
 	int iteration = 0;
-	float maxVecteur;
-	float ancienMaxVecteur;
-	float taux;
+	double maxVecteur;
+	double ancienMaxVecteur;
+	double taux;
 	int resultat;
 	litVecteur(vecteur,taille);
 	litMatriceCarree(matrice,taille);
@@ -148,7 +149,7 @@ int methodeDesPuissances(int ** matrice,float* vecteur,int taille)
 	}
 	
 	printf("Max: %.3f\n", ancienMaxVecteur);
-	diviseVecteurParFloat(vecteur,taille,ancienMaxVecteur);
+	diviseVecteurPardouble(vecteur,taille,ancienMaxVecteur);
 	litVecteur(vecteur,taille);
 
 	do{
@@ -162,7 +163,7 @@ int methodeDesPuissances(int ** matrice,float* vecteur,int taille)
 		maxVecteur = chercheMaxVecteur(vecteur,taille);
 		printf("Max: %.3f\n", maxVecteur);
 
-		diviseVecteurParFloat(vecteur,taille,maxVecteur);
+		diviseVecteurPardouble(vecteur,taille,maxVecteur);
 		litVecteur(vecteur,taille);
 		
 		taux = (maxVecteur - ancienMaxVecteur)/ancienMaxVecteur;
@@ -176,7 +177,7 @@ int methodeDesPuissances(int ** matrice,float* vecteur,int taille)
 	printf("\n------------------------------\n");
 	printf("La valeur propre est %d.\n",resultat);
 	printf("Le vecteur associé est ");
-	litVecteur(vecteur,taille);
+	//litVecteur(vecteur,taille);
 	return 0;
 }
 
@@ -186,9 +187,9 @@ int main()
 {
 	srand(time(NULL));
 	// EXEMPLE 1 RESULTAT ATTENDU : 16
-	/*
-	float * vecteur = NULL;
-	int ** matrice = NULL;
+	
+	double * vecteur = NULL;
+	double** matrice = NULL;
 	int taille = 2;
 
 	vecteur = creeVecteurAleatoire(taille);
@@ -200,10 +201,15 @@ int main()
 	matrice[0][1] = 9;
 	matrice[1][1] = 7;
 	matrice[1][0] = 9;
-	*/
+
+	methodeDesPuissances(matrice,vecteur,taille);
+	free(vecteur);
+	free(matrice);
+		
 	//EXEMPLE 2 //RESULTAT ATTENDU : -1, 2 ou 8
-	float * vecteur = NULL;
-	int ** matrice = NULL;
+	/*
+	double * vecteur = NULL;
+	double** matrice = NULL;
 	int taille = 3;
 
 	vecteur = creeVecteurAleatoire(taille);
@@ -221,10 +227,78 @@ int main()
 	matrice[2][1] = 4;
 	matrice[2][2] = 3;
 
-	
 	methodeDesPuissances(matrice,vecteur,taille);
 	free(vecteur);
 	free(matrice);
+	*/
+	//EXEMPLE 3 RESULTAT ATTENDUE : 11 -35 -79 -120 ???? Donne entre 147 et 166
+	/*
+	double * vecteur = NULL;
+	double** matrice = NULL;
+	int taille;
+	matrice = lectureFichier("rdb1250.mtx",&taille);
+	//printf("TAille : %d\n",taille);
+	vecteur = creeVecteurAleatoire(taille);
+
+	methodeDesPuissances(matrice,vecteur,taille);
+	free(vecteur);
+	free(matrice);
+	*/
+	// EXEMPLE 4 RESULTAT ATTENDU : 2 , -1, 1/2, 9, 3 , ou -6
+	/*
+	double * vecteur = NULL;
+	double** matrice = NULL;
+	int taille = 6;
+
+	vecteur = creeVecteurAleatoire(taille);
+
+	matrice = creeMatriceCarreeAleatoire(taille);
+	matrice[0][0] = 2;
+	matrice[0][1] = 7;
+	matrice[0][2] = -1;
+	matrice[0][3] = 4;
+	matrice[0][4] = 5;
+	matrice[0][5] = 11;
+
+	matrice[1][0] = 0;
+	matrice[1][1] = -1;
+	matrice[1][2] = 2;
+	matrice[1][3] = 0;
+	matrice[1][4] = 0;
+	matrice[2][5] = 6;
+
+	matrice[2][0] = 0;
+	matrice[2][1] = 0;
+	matrice[2][2] = 0.5f;
+	matrice[2][3] = 1;
+	matrice[2][4] = 0;
+	matrice[2][5] = 5;
+	
+	matrice[3][0] = 0;
+	matrice[3][1] = 0;
+	matrice[3][2] = 0;
+	matrice[3][3] = 9;
+	matrice[3][4] = 5;
+	matrice[3][5] = -2;
+
+	matrice[4][0] = 0;
+	matrice[4][1] = 0;
+	matrice[4][2] = 0;
+	matrice[4][3] = 0;
+	matrice[4][4] = 3;
+	matrice[4][5] = 3;
+
+	matrice[5][0] = 0;
+	matrice[5][1] = 0;
+	matrice[5][2] = 0;
+	matrice[5][3] = 0;
+	matrice[5][4] = 0;
+	matrice[5][5] = -6;
+
+	methodeDesPuissances(matrice,vecteur,taille);
+	free(vecteur);
+	free(matrice);
+	*/
 	return 0;
 }
 
