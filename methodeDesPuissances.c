@@ -186,8 +186,12 @@ int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 int main()
 {
 	srand(time(NULL));
+	double debut, fin;	
+
+	debut = omp_get_wtime();
+
 	// EXEMPLE 1 RESULTAT ATTENDU : 16
-	
+	/*
 	double * vecteur = NULL;
 	double** matrice = NULL;
 	int taille = 2;
@@ -205,8 +209,9 @@ int main()
 	methodeDesPuissances(matrice,vecteur,taille);
 	free(vecteur);
 	free(matrice);
+	*/
 		
-	//EXEMPLE 2 //RESULTAT ATTENDU : -1, 2 ou 8
+	//EXEMPLE 2 //RESULTAT ATTENDU : -1, 2, 6, 8, 9, ou 10 (8 et 9 à 90%)
 	/*
 	double * vecteur = NULL;
 	double** matrice = NULL;
@@ -231,8 +236,9 @@ int main()
 	free(vecteur);
 	free(matrice);
 	*/
-	//EXEMPLE 3 RESULTAT ATTENDUE : 11 -35 -79 -120 ???? Donne entre 147 et 166
-	/*
+
+	//EXEMPLE 3 RESULTAT ATTENDU : 11 -35 -79 -120 ???? Donne entre 145 et 166
+
 	double * vecteur = NULL;
 	double** matrice = NULL;
 	int taille;
@@ -243,8 +249,9 @@ int main()
 	methodeDesPuissances(matrice,vecteur,taille);
 	free(vecteur);
 	free(matrice);
-	*/
-	// EXEMPLE 4 RESULTAT ATTENDU : 2 , -1, 1/2, 9, 3 , ou -6
+	
+
+	// EXEMPLE 4 RESULTAT ATTENDU : 2 , -1, 1/2, 9, 3 , ou -6, ==> WTF, moi j'ai 9 à 95% et j'ai eu 10 une fois
 	/*
 	double * vecteur = NULL;
 	double** matrice = NULL;
@@ -299,6 +306,10 @@ int main()
 	free(vecteur);
 	free(matrice);
 	*/
+
+	fin = omp_get_wtime();
+	printf("Temps d'execution total: %f secondes\n", fin-debut);
+
 	return 0;
 }
 

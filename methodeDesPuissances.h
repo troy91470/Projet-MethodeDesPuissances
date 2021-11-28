@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include<omp.h>
 
 
 double* creeVecteurAleatoire(int taille);
