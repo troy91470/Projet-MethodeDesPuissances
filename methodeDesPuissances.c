@@ -101,24 +101,29 @@ void calculeProduitScalaireMatriceCarree(int facteurScalaire,double** matrice,in
 
 
 double* produitMatriceCarreeParVecteur(double** matrice,double* vecteur,int taille)
-{
-	int i,j;
-	double produitColonne;
+{	
 	double* resultat = malloc(taille * sizeof(double));
-	for(i=0;i<taille;i++)
+	#pragma omp parallel
 	{
-		produitColonne = 0;
-		for(j=0;j<taille;j++)
+		int i,j;
+		double produitColonne;
+		#pragma omp for schedule(static,taille/omp_get_num_threads())
+		for(i=0;i<taille;i++)
 		{
-			//printf("%d %d \n",i,j);
-			produitColonne += matrice[i][j] * vecteur[j];
-			//printf("Produit : matrice : %d vecteur : %f resultat : %f  \n",matrice[i][j],vecteur[j],matrice[i][j] * vecteur[j]);
+			produitColonne = 0;
+			for(j=0;j<taille;j++)
+			{
+				//printf("%d %d \n",i,j);
+				produitColonne += matrice[i][j] * vecteur[j];
+				//printf("Produit : matrice : %d vecteur : %f resultat : %f  \n",matrice[i][j],vecteur[j],matrice[i][j] * vecteur[j]);
+			}
+			resultat[i] = produitColonne;
+			//printf("Résultat : %f %f \n",resultat[i],produitColonne);
 		}
-		resultat[i] = produitColonne;
-		//printf("Résultat : %f %f \n",resultat[i],produitColonne);
 	}
 	return resultat;
 }
+
 
 
 void diviseVecteurPardouble(double* vecteur,int taille,double diviseur)
