@@ -143,8 +143,8 @@ int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 	double ancienMaxVecteur;
 	double taux;
 	int resultat;
-	litVecteur(vecteur,taille);
-	litMatriceCarree(matrice,taille);
+	//litVecteur(vecteur,taille);
+	//litMatriceCarree(matrice,taille);
 
 	ancienMaxVecteur = chercheMaxVecteur(vecteur,taille);
 	if (estMatriceNulle(matrice,taille))
@@ -155,7 +155,7 @@ int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 	
 	printf("Max: %.3f\n", ancienMaxVecteur);
 	diviseVecteurPardouble(vecteur,taille,ancienMaxVecteur);
-	litVecteur(vecteur,taille);
+	//litVecteur(vecteur,taille);
 
 	do{
 
@@ -163,13 +163,13 @@ int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 		printf("Iteration: %d\n", iteration);
 
 		vecteur = produitMatriceCarreeParVecteur(matrice,vecteur,taille);
-		litVecteur(vecteur,taille);
+		//litVecteur(vecteur,taille);
 
 		maxVecteur = chercheMaxVecteur(vecteur,taille);
 		printf("Max: %.3f\n", maxVecteur);
 
 		diviseVecteurPardouble(vecteur,taille,maxVecteur);
-		litVecteur(vecteur,taille);
+		//litVecteur(vecteur,taille);
 		
 		taux = (maxVecteur - ancienMaxVecteur)/ancienMaxVecteur;
 		printf("-- taux: %.3f --\n",taux);
@@ -250,8 +250,11 @@ int main()
 	matrice = lectureFichier("rdb1250.mtx",&taille);
 	//printf("TAille : %d\n",taille);
 	vecteur = creeVecteurAleatoire(taille);
-
-	methodeDesPuissances(matrice,vecteur,taille);
+	for (int i = 0; i < 30; i++)
+	{
+		methodeDesPuissances(matrice,vecteur,taille);
+	}
+	
 	free(vecteur);
 	free(matrice);
 	
