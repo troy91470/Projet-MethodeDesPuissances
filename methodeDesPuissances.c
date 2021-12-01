@@ -61,23 +61,37 @@ double chercheMaxVecteur(double* vecteur,int taille)
 {
 	int i;
 	double max = fabs(vecteur[0]);
-	
-	#pragma omp parallel for schedule(static,taille/omp_get_num_threads())
-	for(i = 1;i < taille;i++)
+	int nbThreads = omp_get_num_threads();
+
+	if(nbThreads > taille)
 	{
-		if(fabs(vecteur[i]) > max)
-			max = fabs(vecteur[i]);
+		nbThreads = taille;
+	}
+
+	#pragma omp parallel num_threads(nbThreads) 
+	{
+		#pragma omp for schedule(static,taille/nbThreads) 
+		for(i = 1;i < taille;i++)
+		{
+			#pragma omp critical
+			{
+				if(fabs(vecteur[i]) > max)
+					max = fabs(vecteur[i]);
+			}
+		}
 	}
 
 	return max;
 }
 
+
 int estMatriceNulle(double** matrice, int taille)
 {
 	int i,j;
+
 	for (i = 0; i < taille; i++)
 	{
-		for (j = 0; j < taille; j++)
+		for(j = 0; j < taille; j++)
 		{
 			if(matrice[i][j] != 0)
 			{
@@ -85,6 +99,7 @@ int estMatriceNulle(double** matrice, int taille)
 			}
 		}
 	}
+
 	return 1;
 }
 
@@ -104,11 +119,20 @@ void calculeProduitScalaireMatriceCarree(int facteurScalaire,double** matrice,in
 double* produitMatriceCarreeParVecteur(double** matrice,double* vecteur,int taille)
 {	
 	double* resultat = malloc(taille * sizeof(double));
-	#pragma omp parallel
+	int nbThreads = omp_get_num_threads();
+
+	if(nbThreads > taille)
+	{
+		nbThreads = taille;
+	}
+
+
+	#pragma omp parallel num_threads(nbThreads)
 	{
 		int i,j;
 		double produitColonne;
-		#pragma omp for schedule(static,taille/omp_get_num_threads())
+
+		#pragma omp for schedule(static,taille/nbThreads)
 		for(i=0;i<taille;i++)
 		{
 			produitColonne = 0;
@@ -127,16 +151,18 @@ double* produitMatriceCarreeParVecteur(double** matrice,double* vecteur,int tail
 
 
 
-void diviseVecteurPardouble(double* vecteur,int taille,double diviseur)
+void diviseVecteurParDouble(double* vecteur,int taille,double diviseur)
 {
 	int i;
-
+	
 	if(diviseur != 0)
 	{
 		for(i=0;i<taille;i++)
 			vecteur[i] = vecteur[i]/diviseur;
 	}
 }
+
+
 int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 {
 	int iteration = 0;
@@ -155,7 +181,7 @@ int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 	}
 	
 	printf("Max: %.3f\n", ancienMaxVecteur);
-	diviseVecteurPardouble(vecteur,taille,ancienMaxVecteur);
+	diviseVecteurParDouble(vecteur,taille,ancienMaxVecteur);
 	//litVecteur(vecteur,taille);
 
 	do{
@@ -169,7 +195,7 @@ int methodeDesPuissances(double** matrice,double* vecteur,int taille)
 		maxVecteur = chercheMaxVecteur(vecteur,taille);
 		printf("Max: %.3f\n", maxVecteur);
 
-		diviseVecteurPardouble(vecteur,taille,maxVecteur);
+		diviseVecteurParDouble(vecteur,taille,maxVecteur);
 		//litVecteur(vecteur,taille);
 		
 		taux = (maxVecteur - ancienMaxVecteur)/ancienMaxVecteur;
@@ -244,7 +270,7 @@ int main()
 	*/
 
 	//EXEMPLE 3 RESULTAT ATTENDU : 11 -35 -79 -120 ???? Donne entre 145 et 166
-
+	
 	double * vecteur = NULL;
 	double** matrice = NULL;
 	int taille;
@@ -258,7 +284,7 @@ int main()
 	
 	free(vecteur);
 	free(matrice);
-	
+		
 
 	// EXEMPLE 4 RESULTAT ATTENDU : 2 , -1, 1/2, 9, 3 , ou -6, ==> WTF, moi j'ai 9 à 95% et j'ai eu 10 une fois
 	/*

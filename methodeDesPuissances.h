@@ -13,5 +13,5 @@ double chercheMaxVecteur(double* vecteur,int taille);
 int estMatriceNulle(double** matrice, int taille);
 void calculeProduitScalaireMatriceCarree(int facteurScalaire,double** matrice,int taille);
 double* produitMatriceCarreeParVecteur(double** matrice,double* vecteur,int taille);
-void diviseVecteurPardouble(double* vecteur,int taille,double diviseur);
+void diviseVecteurParDouble(double* vecteur,int taille,double diviseur);
 int methodeDesPuissances(double** matrice,double* vecteur,int taille);
