@@ -61,7 +61,8 @@ double chercheMaxVecteur(double* vecteur,int taille)
 {
 	int i;
 	double max = fabs(vecteur[0]);
-
+	
+	#pragma omp parallel for schedule(static,taille/omp_get_num_threads())
 	for(i = 1;i < taille;i++)
 	{
 		if(fabs(vecteur[i]) > max)
