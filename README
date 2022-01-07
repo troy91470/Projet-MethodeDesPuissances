@@ -1,7 +1,15 @@
+Il existe plusieurs versions du code adaptées aux tests de scalabilité forte et faible.
+Cependant le code reste le même, il est donc conseillé d'étudier uniquement les fichiers suivants pour l'analyse du code :
+- LIMCHOUSANGBjorn-ROYThomas_codeSourcePUISS.c
+- LIMCHOUSANGBjorn-ROYThomas_codeSourcePUISS.h
+
 Compilation:
 (Makefile pour simplifier la commande de compilation)
 $ make
-
+$ make faible1 //Pour les test de performance de la version 1 pour la scalabilité faible.
+$ make faible2 //Pour les test de performance de la version 1 pour la scalabilité faible.
+$ make forte1 //Pour les test de performance de la version 1 pour la scalabilité forte.
+$ make forte2 //Pour les test de performance de la version 1 pour la scalabilité forte.
 Execution:
 (Une fois compilé)
 $ ./methodeDesPuissances
