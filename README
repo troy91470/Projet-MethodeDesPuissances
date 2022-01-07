@@ -1,7 +1,7 @@
 Il existe plusieurs versions du code adaptées aux tests de scalabilité forte et faible.
 Cependant le code reste le même, il est donc conseillé d'étudier uniquement les fichiers suivants pour l'analyse du code :
-- LimBjorn-RoyThomas_codeSourcePUISS.c
-- LimBjorn-RoyThomas_codeSourcePUISS.h
+- LIMCHOUSANGBjorn-ROYThomas_codeSourcePUISS.c
+- LIMCHOUSANGBjorn-ROYThomas_codeSourcePUISS.h
 
 Compilation:
 (Makefile pour simplifier la commande de compilation)
