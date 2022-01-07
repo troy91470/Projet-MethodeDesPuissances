@@ -7,9 +7,9 @@ Compilation:
 (Makefile pour simplifier la commande de compilation)
 $ make
 $ make faible1 //Pour les tests de performance de la version 1 pour la scalabilité faible.
-$ make faible2 //Pour les tests de performance de la version 1 pour la scalabilité faible.
+$ make faible2 //Pour les tests de performance de la version 2 pour la scalabilité faible.
 $ make forte1 //Pour les tests de performance de la version 1 pour la scalabilité forte.
-$ make forte2 //Pour les tests de performance de la version 1 pour la scalabilité forte.
+$ make forte2 //Pour les tests de performance de la version 2 pour la scalabilité forte.
 
 Execution:
 (Une fois compilé)
